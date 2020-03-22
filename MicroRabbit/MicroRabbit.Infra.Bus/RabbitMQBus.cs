@@ -50,9 +50,7 @@ namespace MicroRabbit.Infra.Bus
             }
         }
 
-        public void Subscribe<T, TH>()
-            where T : Event
-            where TH : IEventHandler
+        public void Subscribe<T, TH>() where T : Event where TH : IEventHandler
         {
             var eventName = typeof(T).Name;
             var handler = typeof(TH);
