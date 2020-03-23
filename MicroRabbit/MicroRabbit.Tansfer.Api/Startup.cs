@@ -1,7 +1,9 @@
 ﻿using MediatR;
-using MicroRabbit.Banking.Data.Context;
+using MicroRabbit.Banking.Domain.Events;
+using MicroRabbit.Domain.Core.Bus;
 using MicroRabbit.Infra.IoC;
 using MicroRabbit.Transfer.Data.Context;
+using MicroRabbit.Transfer.Domain.EventHandlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +68,14 @@ namespace MicroRabbit.Tansfer.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Transfer Microservice v1");
             });
             app.UseMvc();
+
+            ConfigureEventBus(app);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<TransferCreatedEvent, TransferEventHandler>();
         }
     }
 }
